@@ -1,0 +1,28 @@
+{
+    "version": 2,
+    "builds": [
+      {
+        "src": "server.js",
+        "use": "@vercel/node"
+      }
+    ],
+    "routes": [
+      {
+        "src": "/api/(.*)",
+        "dest": "/server.js"
+      },
+      {
+        "src": "/users/(.*)",
+        "dest": "/server.js"
+      }
+    ],
+    "env": {
+      "MONGODB_URL": "mongodb+srv://ankit:2311@cluster2.esup7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster2",
+      "ACCESS_TOKEN_SECRET": "SECRETTOKEN",
+      "REFRESH_TOKEN_SECRET": "REFRESHTOKEN",
+      "CLOUD_NAME": "dqrojsq1l",
+      "CLOUD_API_KEY": "647836616997775",
+      "CLOUD_API_SECRET": "9aap8xybVZvDf3yBRCEAKKTVUD8"
+    }
+  }
+  
