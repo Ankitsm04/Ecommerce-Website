@@ -45,13 +45,18 @@ app.use('/api',require('./routes/upload'))
 
 const URI = process.env.MONGODB_URI;
 
-mongoose.connect(URI,{
-    useNewUrlParser:true,
-    useUnifiedTopology:true
-}).then(()=>{
-    console.log("MongoDB Connected");
-    console.log("SERVER AT", PORT)
-}).catch(err=>{
-    console.log(err);
-})
+const connectWithRetry = () => {
+    mongoose.connect(URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+      maxPoolSize: 10
+    }).then(() => {
+      console.log('MongoDB connected');
+    }).catch(err => {
+      console.error('MongoDB connection error', err);
+      setTimeout(connectWithRetry, 5000); // Retry after 5 seconds
+    });
+  };
+  
+  connectWithRetry();
 
