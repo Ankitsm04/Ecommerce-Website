@@ -7,14 +7,11 @@
       }
     ],
     "routes": [
-      {
-        "src": "/api/(.*)",
-        "dest": "/server.js"
-      },
-      {
-        "src": "/users/(.*)",
-        "dest": "/server.js"
-      }
+        { "src": "/api/categories/(.*)", "dest": "/server.js" },
+        { "src": "/api/products/(.*)", "dest": "/server.js" },
+        { "src": "/api/uploads/(.*)", "dest": "/server.js" },
+        { "src": "/user/(.*)", "dest": "/server.js" },
+        { "src": "/", "dest": "/server.js" }
     ],
     "env": {
       "MONGODB_URL": "mongodb+srv://ankit:2311@cluster2.esup7.mongodb.net/?retryWrites=true&w=majority&appName=Cluster2",
