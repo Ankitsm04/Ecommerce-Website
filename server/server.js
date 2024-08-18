@@ -1,18 +1,10 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const cors = require('cors')
 const fileUpload = require('express-fileupload');
 require('dotenv').config();
 const cookieParser = require('cookie-parser')
 
 const app = express();
-app.use(cors(
-    {
-        origin: ["https://a1-market-backend.vercel.app"],
-        method: ["POST","GET","DELETE","PUT"],
-        credentials: true
-    }
-));
 // Middleware to parse JSON bodies
 app.use(express.json());
 app.use(cookieParser());
