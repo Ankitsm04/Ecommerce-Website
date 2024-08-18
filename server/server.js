@@ -9,7 +9,7 @@ const app = express();
 
 // CORS configuration to allow all origins
 app.use(cors({
-    origin: 'https://a1-market.vercel.app/', // Allow all origins
+    origin: 'https://a1-market.vercel.app', // Allow all origins
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true // Allow credentials if needed
