@@ -25,7 +25,7 @@ const Register = () => {
     }
     setPasswordError('');
     try {
-      await axios.post('/user/register', { ...user });
+      await axios.post(`${process.env.REACT_APP_API_URL}/user/register`, { ...user });
       localStorage.setItem('firstLogin', true);
       window.location.href = "/";
     } catch (err) {
