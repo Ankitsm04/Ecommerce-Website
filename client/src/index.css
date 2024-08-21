@@ -22,9 +22,13 @@ ul li{
 
 button{
   border: none;
-  outline: none;
-  background-color: transparent;
+  outline:none;
+  background:transparent;
   cursor: pointer;
 }
 
-@import url("./components/headers/Header.css")
+@import url("./components/headers/Header.css");
+
+@import url("./components/mainpages/products/products.css");
+
+@import url("./components/mainpages/products/utils/DetailProducts/detailProduct.css");

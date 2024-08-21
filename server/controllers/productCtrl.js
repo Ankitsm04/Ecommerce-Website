@@ -1,120 +1,121 @@
-const Products = require('../models/productModel');
+const { query } = require('express');
+const Products = require('../models/productModel')
 
-// Filtering, sorting, and pagination
-class APIfeatures {
-    constructor(query, queryString) {
+
+//Filter,sorting and pagination
+
+class APIfeatures{
+    constructor(query,queryString){
         this.query = query;
-        this.queryString = queryString;
+        this.queryString = queryString
     }
 
-    filtering() {
-        const queryObj = { ...this.queryString };
-        const excludedFields = ['page', 'sort', 'limit'];
-        excludedFields.forEach(el => delete queryObj[el]);
+    filtering(){
+        const queryObj = {...this.queryString} 
 
-        let queryStr = JSON.stringify(queryObj);
-        queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g, match => '$' + match);
 
-        this.query.find(JSON.parse(queryStr));
-        return this;
+        const excluededFields = ['page','sort','limit']
+        excluededFields.forEach(el => delete(queryObj[el]))
+
+
+        let queryStr = JSON.stringify(queryObj)
+        queryStr = queryStr.replace(/\b(gte|gt|lt|lte|regex)\b/g, match => '$' + match)
+
+        this.query.find(JSON.parse(queryStr))
+
+        return this
     }
 
-    sorting() {
-        if (this.queryString.sort) {
-            const sortBy = this.queryString.sort.split(',').join(' ');
-            this.query = this.query.sort(sortBy);
-        } else {
-            this.query = this.query.sort('-createdAt');
+    sorting(){
+        if(this.queryString.sort){
+            const sortBy = this.queryString.sort.split(',').join('')
+
+            this.query = this.query.sort(sortBy)
+
+            console.log(sortBy)
+        }else{
+            this.query = this.query.sort('-createdAt')
         }
-        return this;
+
+        return this
     }
 
-    pagination() {
+    pagination(){
+
         const page = this.queryString.page * 1 || 1;
-        const limit = this.queryString.limit * 1 || 9;
-        const skip = (page - 1) * limit;
+
+        const limit =  this.queryString.limit * 1 || 9;
+
+        const skip = (page-1) * limit;
 
         this.query = this.query.skip(skip).limit(limit);
+
         return this;
     }
 }
 
 const productCtrl = {
-    getProducts: async (req, res) => {
-        try {
-            const features = new APIfeatures(Products.find(), req.query)
-                .filtering()
-                .sorting()
-                .pagination();
-            const products = await features.query;
+    getProducts:async(req,res) => {
+        try{
+            console.log(req.query)
+            const features = new APIfeatures(Products.find(),req.query).filtering().sorting().pagination()
+            const products = await features.query
 
-            res.json({ result: products.length, products });
-        } catch (err) {
-            return res.status(500).json({ msg: err.message });
+            res.json({status:'success',
+            result: products.length,
+        products:products})
+        }
+        catch(err){
+            return res.status(500).json({msg:err.message})
         }
     },
+    createProducts:async(req,res) => {
+        try{
+            const {product_id,title,price,description,content,images,category} = req.body
 
-    createProducts: async (req, res) => {
-        try {
-            const { product_id, title, price, description, content, images, category } = req.body;
-            if (!images) return res.status(400).json({ msg: "No Image Upload" });
+            if(!images) return res.status(400).json({msg:"No Image Upload"})
 
-            const product = await Products.findOne({ product_id });
-            if (product) return res.status(400).json({ msg: "Product already Exists" });
+            const product = await Products.findOne({product_id})
+
+            if(product)
+            return res.status(400).json({msg:"This product already exists"})
 
             const newProduct = new Products({
-                product_id,
-                title: title.toLowerCase(),
-                price,
-                description,
-                content,
-                images,
-                category
-            });
+                product_id,title : title.toLowerCase(),price,description,content,images,category
+            })
+
             await newProduct.save();
-            res.json(newProduct);
-        } catch (err) {
-            return res.status(500).json({ msg: err.message });
+
+            res.json({msg:"Create a product"})
+        }
+        catch(err){
+            return res.status(500).json({msg:err.message})
         }
     },
-
-    deleteProduct: async (req, res) => {
-        try {
-            const product = await Products.findById(req.params.id);
-            if (!product) return res.status(400).json({ msg: "Product not found" });
-
-            await Products.findByIdAndDelete(req.params.id);
-            res.json({ msg: "Deleted a Product" });
-        } catch (err) {
-            return res.status(500).json({ msg: err.message });
+    deleteProduct:async(req,res) => {
+        try{
+            await Products.findByIdAndDelete(req.params.id)
+            res.json({msg:"Deleted a Product"})
+        }catch(err){
+            return res.status(500).json({msg:err.message})
         }
     },
+    updateProduct:async(req,res) => {
+        try{
+            const {title,price,description,content,images,category} = req.body;
 
-    updateProduct: async (req, res) => {
-        try {
-            const { title, price, description, content, images, category } = req.body;
-            if (!images) return res.status(400).json({ msg: "No Image Upload" });
+            if(!images) return res.status(500).json({msg:"No Image Upload"})
 
-            const updatedProduct = await Products.findOneAndUpdate(
-                { _id: req.params.id },
-                {
-                    title: title.toLowerCase(),
-                    price,
-                    description,
-                    content,
-                    images,
-                    category
-                },
-                { new: true }
-            );
+            await Products.findOneAndUpdate({_id:req.params.id},{
+                title:title.toLowerCase(),price,description,content,images,category
+            })
 
-            if (!updatedProduct) return res.status(400).json({ msg: "Product not found" });
-
-            res.json({ msg: "Updated a Product", updatedProduct });
-        } catch (err) {
-            return res.status(500).json({ msg: err.message });
+            res.json({msg:"Updated a Product"})
         }
-    },
-};
+        catch(err){
+            return res.status(500).json({msg:err.message})
+        }
+    }
+}
 
-module.exports = productCtrl;
+module.exports = productCtrl

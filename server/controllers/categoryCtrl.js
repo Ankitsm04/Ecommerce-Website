@@ -1,24 +1,28 @@
-const Category = require("../models/categoryModels");
+const Category = require("../models/categoryModels")
 
 const categoryCtrl = {
-    getCategory: async(req,res) => {
+    getCategories : async(req,res) => {
         try{
-            const categories = await Category.find();
-            res.json(categories);
+            const categories = await Category.find()
+            res.json(categories)
         }catch(err){
             return res.status(500).json({msg:err.message})
         }
     },
     createCategory: async(req,res) => {
         try{
+
             const {name} = req.body;
             const category = await Category.findOne({name})
 
-            if(category) return res.status(400).json({msg:"Category Already Exists"})
-            
+            if(category) return res.status(400).json({msg:"Category Already Exixts"})
+
             const newCategory = new Category({name})
+
             await newCategory.save()
+
             res.json({msg:"Created a Category"})
+
         }catch(err){
             return res.status(500).json({msg:err.message})
         }
@@ -31,13 +35,14 @@ const categoryCtrl = {
             return res.status(500).json({msg:err.message})
         }
     },
-    updateCategory: async(req,res) => {
+    updateCategory:async(req,res) => {
         try{
             const {name} = req.body;
             await Category.findByIdAndUpdate({_id:req.params.id},{name})
+
             res.json({msg:"Updated"})
         }catch(err){
-            return res.status(500).json({msg:err.message})
+            return res.status(500).josn({msg:err.message })
         }
     }
 }

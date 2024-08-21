@@ -1,61 +1,51 @@
 const express = require('express');
 const mongoose = require('mongoose');
-const fileUpload = require('express-fileupload');
-const cors = require('cors'); // Import cors package
-require('dotenv').config();
-const cookieParser = require('cookie-parser');
+require('dotenv').config()
+const cookieParser = require('cookie-parser')
+const fileUpload = require('express-fileupload')
+const cors = require('cors');
+
 
 const app = express();
-
-// CORS configuration to allow all origins
 app.use(cors({
     origin: ['https://a1-market.vercel.app', 'http://localhost:3000'],
     methods: 'GET,POST,PUT,DELETE,OPTIONS',
     allowedHeaders: 'Content-Type,Authorization',
-    credentials: true // Allow credentials if needed
+    credentials: true
 }));
-
-// Middleware to parse JSON bodies
-app.use(express.json());
-app.use(cookieParser());
-
+app.use(express.json())             
+app.use(cookieParser())
 app.use(fileUpload({
-    useTempFiles: true,
-    tempFileDir: '/tmp/'
-}));
-
-// Middleware to parse URL-encoded bodies
-app.use(express.urlencoded({ extended: true }));
+    useTempFiles:true
+}))
 
 const PORT = process.env.PORT || 5000;
 
-app.get('/', (req, res) => {
-    res.json({ msg: "This is Example" });
-});
+app.get('/',(req,res)=>{
+    res.json({msg:"This is Example"})
+})
 
-// Define routes
-app.use('/user', require('./routes/useRoutes'));
-app.use('/api', require('./routes/categoryRoutes'));
-app.use('/api', require('./routes/productRoutes'));
-app.use('/api', require('./routes/upload'));
+app.listen(PORT,() => {
+    console.log("SERVER IS RUNNING ...")
+})
 
-const URI = process.env.MONGODB_URI;
+//Routes 
+app.use('/user',require('./routes/userRouter'))
+app.use('/api',require('./routes/categoryRouter'))
+app.use('/api',require('./routes/upload'))
+app.use('/api',require('./routes/productRouter'))
 
-const connectWithRetry = () => {
-    mongoose.connect(URI, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-        maxPoolSize: 10
-    }).then(() => {
-        console.log('MongoDB connected');
-    }).catch(err => {
-        console.error('MongoDB connection error', err);
-        setTimeout(connectWithRetry, 5000); // Retry after 5 seconds
-    });
-};
 
-connectWithRetry();
+//connect mongoDB
 
-app.listen(PORT, () => {
-    console.log(`Server Running on port ${PORT}`);
-});
+const URI = process.env.MONGODB_URL;
+
+
+mongoose.connect(URI,{
+    useNewUrlParser:true,
+    useUnifiedTopology:true,
+}).then(()=>{
+    console.log("MongoDB Connected")
+}).catch(err => {
+    console.log(err)
+})
