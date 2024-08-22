@@ -40,10 +40,10 @@ app.use('/api',require('./routes/productRouter'))
 
 //connect mongoDB
 
-const URI = process.env.MONGODB_URL;
+const URL = process.env.MONGODB_URL;
 
 
-mongoose.connect(URI,{
+mongoose.connect(URL,{
     useNewUrlParser:true,
     useUnifiedTopology:true,
 }).then(()=>{
