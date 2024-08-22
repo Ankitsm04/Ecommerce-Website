@@ -4,7 +4,7 @@ import Login from './login/Login'
 import Register from './login/Register'
 import Cart from './Cart/Cart'
 import { Route, Routes } from 'react-router-dom'
-import DetailProduct from './products/utils/DetailProducts/DetailProduct'
+import DetailProduct from './products/utils/Detailproducts/DetailProduct'
 
 const Pages = () => {
   return (
