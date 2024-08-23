@@ -27,8 +27,9 @@ const userCtrl = {
             const accesstoken = createAccessToken({id:newUser._id})
             const refreshtoken = createRefreshToken({id:newUser._id})
 
-            res.cookie('refreshtoken', refreshtoken,{      
-                path:'/user/refresh_token',
+            res.cookie('refreshtoken', refreshtoken,{ 
+                secure: 'https://ecommerce-website-oiw9.onrender.com' === 'production',
+                path:'/user/refresh_token'
             })
 
             res.json({accesstoken})
@@ -72,7 +73,8 @@ return res.status(500).json({msg:err.message})
             const refreshtoken = createRefreshToken({id:user._id})
 
             res.cookie('refreshtoken',refreshtoken,{
-                path:'/user/refresh_token',
+                secure: 'https://ecommerce-website-oiw9.onrender.com' === 'production',
+                path:'/user/refresh_token'
             })
 
             res.json({accesstoken})
