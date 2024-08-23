@@ -10,7 +10,7 @@ const UserAPI = (token) => {
         if (token) {
             const getUser = async () => {
                 try {
-                    const res = await axios.get(`${process.env.API_KEY}/user/infor`, {
+                    const res = await axios.get(`https://ecommerce-website-oiw9.onrender.com/user/infor`, {
                         headers: { Authorization: token }
                     });
 
