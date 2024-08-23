@@ -5,7 +5,6 @@ import { MdOutlineAddShoppingCart } from "react-icons/md";
 import {Link} from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import axios from 'axios';
-import './Header.css';
 
 const Header = () => {
 
@@ -16,7 +15,7 @@ const Header = () => {
 
 
     const logoutUser = async() => {
-        await axios.get('https://ecommerce-website-oiw9.onrender.com/user/logout')
+        await axios.get(`${process.env.API_KEY}/user/logout`)
 
         localStorage.clear()
         setIsAdmin(false)
@@ -49,7 +48,7 @@ const Header = () => {
 
         <div className='logo'>
             <h1>
-                <Link to="/">{isAdmin?'Admin':'30DC Shop'}</Link>
+                <Link to="/">{isAdmin?'Admin':'A1 Market'}</Link>
             </h1>
         </div>
 

@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
 import {Link} from 'react-router-dom'
 import axios from 'axios'
-import './Register.css'
 
 const Register = () => {
   const [user,setUser] = useState({
@@ -18,7 +17,7 @@ const Register = () => {
   const registerSubmit =async e => {
     e.preventDefault()
     try{
-      await axios.post('https://ecommerce-website-oiw9.onrender.com/user/register',{...user})
+      await axios.post(`${process.env.API_KEY}/user/register`,{...user})
 
       localStorage.setItem('firstLogin',true)
 

@@ -1,8 +1,8 @@
 import { createContext, useEffect } from "react";
-import ProductAPI from "./api/ProductAPI";
+import ProductAPI from "./components/API/ProductAPI";
 import { useState } from "react";
 import axios from "axios";
-import UserAPI from "./api/UserAPI";
+import UserAPI from "./components/API/UserAPI";
 
 export const GlobalState = createContext()
 
@@ -11,7 +11,7 @@ export const DataProvider = ({children}) => {
     const [token,setToken] = useState(false)
 
     const refreshToken = async () => {
-        const res = await axios.get('https://ecommerce-website-oiw9.onrender.com/user/refresh_token')
+        const res = await axios.get(`${process.env.API_KEY}/user/refresh_token`)
 
         setToken(res.data.accesstoken)
     }

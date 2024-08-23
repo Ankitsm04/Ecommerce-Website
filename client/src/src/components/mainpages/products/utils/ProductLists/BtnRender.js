@@ -1,10 +1,9 @@
 import React from 'react'
-import { GlobalState } from '../../../../GlobalState'
+import { GlobalState } from '../../../../../GlobalState'
 import { Link } from 'react-router-dom'
 import { useContext } from 'react'
 
-const BtnRender = (product) => {
-
+const BtnRender = ({product}) => {
     const state = useContext(GlobalState)
   const [isAdmin] = state.userAPI.isAdmin
   const addCart = state.userAPI.addCart

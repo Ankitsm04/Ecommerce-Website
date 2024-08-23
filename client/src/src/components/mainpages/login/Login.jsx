@@ -17,7 +17,7 @@ const Login = () => {
   const loginSubmit =async e => {
     e.preventDefault()
     try{
-      await axios.post('https://ecommerce-website-oiw9.onrender.com/user/login',{...user})
+      await axios.post(`${process.env.API_KEY}/user/login`,{...user})
 
       localStorage.setItem('firstLogin',true)
 

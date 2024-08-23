@@ -2,9 +2,9 @@ import React from 'react'
 import Product from './products/Product'
 import Login from './login/Login'
 import Register from './login/Register'
-import Cart from './cart/cartpage'
+import Cart from './Cart/Cart'
 import { Route, Routes } from 'react-router-dom'
-import DetailProduct from './utils/DetailProducts/DetailProduct'
+import DetailProduct from './products/utils/DetailProducts/DetailProduct'
 
 const Pages = () => {
   return (
