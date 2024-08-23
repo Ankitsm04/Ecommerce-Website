@@ -5,6 +5,7 @@ import { MdOutlineAddShoppingCart } from "react-icons/md";
 import {Link} from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import axios from 'axios';
+import './header.css'
 
 const Header = () => {
 
