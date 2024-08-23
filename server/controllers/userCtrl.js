@@ -28,7 +28,7 @@ const userCtrl = {
             const refreshtoken = createRefreshToken({id:newUser._id})
 
             res.cookie('refreshtoken', refreshtoken,{
-                httpOnly:true,
+                httpOnly:false,
                 path:'/user/refresh_token'
             })
 
