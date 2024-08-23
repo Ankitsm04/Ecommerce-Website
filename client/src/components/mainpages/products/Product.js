@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { GlobalState } from '../../../GlobalState'
-import ProductList from '../products/utils/ProductLists/ProductList'
+import ProductList from '../utils/ProductLists/ProductList'
 
 const Product = () => {
   const state = useContext(GlobalState)
