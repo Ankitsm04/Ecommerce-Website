@@ -17,7 +17,7 @@ const Register = () => {
   const registerSubmit =async e => {
     e.preventDefault()
     try{
-      await axios.post(`${process.env.API_KEY}/user/register`,{...user})
+      await axios.post(`https://ecommerce-website-oiw9.onrender.com/user/register`,{...user})
 
       localStorage.setItem('firstLogin',true)
 
