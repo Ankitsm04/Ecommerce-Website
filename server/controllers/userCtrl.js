@@ -29,6 +29,7 @@ const userCtrl = {
 
             res.cookie('refreshtoken', refreshtoken,{ 
                 secure: 'https://ecommerce-website-oiw9.onrender.com' === 'production',
+                domain: '.vercel.app',
                 path:'/user/refresh_token'
             })
 
@@ -74,6 +75,7 @@ return res.status(500).json({msg:err.message})
 
             res.cookie('refreshtoken',refreshtoken,{
                 secure: 'https://ecommerce-website-oiw9.onrender.com' === 'production',
+                domain: '.vercel.app',
                 path:'/user/refresh_token'
             })
 
