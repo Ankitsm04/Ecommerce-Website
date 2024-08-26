@@ -27,9 +27,8 @@ const userCtrl = {
             const accesstoken = createAccessToken({id:newUser._id})
             const refreshtoken = createRefreshToken({id:newUser._id})
 
-            res.cookie('refreshtoken', refreshtoken,{
-                httpOnly:false,
-                path:'/user/refresh_token'
+            res.cookie('refreshtoken', refreshtoken,{      
+                path:'/user/refresh_token',
             })
 
             res.json({accesstoken})
@@ -73,8 +72,7 @@ return res.status(500).json({msg:err.message})
             const refreshtoken = createRefreshToken({id:user._id})
 
             res.cookie('refreshtoken',refreshtoken,{
-                httpOnly:true,
-                path:'/user/refresh_token'
+                path:'/user/refresh_token',
             })
 
             res.json({accesstoken})
