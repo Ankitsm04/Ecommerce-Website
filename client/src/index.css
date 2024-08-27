@@ -29,6 +29,6 @@ button{
 
 @import url("./components/headers/Header.css");
 
-@import url("./components/mainpages/products/Products.css");
+@import url("./components/mainpages/products/products.css");
 
 @import url("./components/mainpages/products/utils/DetailProducts/detailProduct.css");

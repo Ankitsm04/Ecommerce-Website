@@ -3,120 +3,86 @@ const jwt = require('jsonwebtoken')
 const bcrypt = require('bcrypt')
 
 const userCtrl = {
-    register: async(req,res) => {
-        try{
-            const {name,email,password} = req.body;
+    register: async (req, res) => {
+        try {
+            const { name, email, password } = req.body;
 
-            const user = await Users.findOne({email})
-            if(user) return res.status(400).json({msg:"Email Already Registered"})
+            const userExist = await Users.findOne({ email });
+            if (userExist) return res.status(400).json({ msg: "Email Already Registered" });
 
-            if(password.length < 6)
-            return res.status(400).json({msg:"Password is at least 6 character"})
+            if (password.length < 6)
+                return res.status(400).json({ msg: "Password is at least 6 characters" });
 
-            //Password Encryption
-            const passwordHash = await bcrypt.hash(password,10)
+            // Password Encryption
+            const passwordHash = await bcrypt.hash(password, 10);
 
             const newUser = new Users({
-                name,email,password:passwordHash
-            })
-
-            //Save mongodb
-            await newUser.save()
-
-            //create jwt to authenticate
-            const accesstoken = createAccessToken({id:newUser._id})
-            const refreshtoken = createRefreshToken({id:newUser._id})
-
-            res.cookie('refreshtoken', refreshtoken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'None',
-                path: '/user/refresh_token',
-                domain: '.onrender.com' // Ensure it matches your production domain
+                name, email, password: passwordHash
             });
 
-            res.json({accesstoken})
+            // Save to MongoDB
+            await newUser.save();
 
-        }
-        catch(err){
-            return res.status(500).json({msg:err.message})
+            // Create JWT for authentication
+            const accesstoken = createAccessToken({ id: newUser._id });
+            const refreshtoken = createRefreshToken({ id: newUser._id });
+
+            res.json({ accesstoken, refreshtoken });
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
         }
     },
-    refreshtoken: async(req,res) => {
 
-        try{
-            const rf_token = req.cookies.refreshtoken;
+    login: async (req, res) => {
+        try {
+            const { email, password } = req.body;
 
-            if(!rf_token) return res.status(400).json({msg:"Please Login or Registers"});
-    
-            jwt.verify(rf_token,process.env.REFRESH_TOKEN_SECRET,(err,user) => {
-                if(err) return res.status(400).json({msg:"Please Login or Register"})
-                const accesstoken = createAccessToken({id:user.id})
-            res.json({accesstoken})
-            })
-    
-        }
-        catch(err){
-return res.status(500).json({msg:err.message})
-        }
-       
+            const userExists = await Users.findOne({ email });
+            if (!userExists) return res.status(401).json({ msg: "Invalid email" });
 
-    },
-    login:async(req,res)=>{
-        try{
-            const {email,password} = req.body;
+            const isMatch = await bcrypt.compare(password, userExists.password);
+            if (!isMatch) return res.status(401).json({ msg: "Invalid password" });
 
-            const user = await Users.findOne({email})
-            if(!user) return res.status(400).json({msg:"User does not exist"})
+            const accesstoken = createAccessToken({ id: userExists._id });
+            const refreshtoken = createRefreshToken({ id: userExists._id });
 
-            const isMatch = await bcrypt.compare(password,user.password)
-            if(!isMatch) return res.status(400).json({msg:"Incorrect Password"})
-
-            const accesstoken = createAccessToken({id:user._id})
-            const refreshtoken = createRefreshToken({id:user._id})
-
-            res.cookie('refreshtoken', refreshtoken, {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'None',
-                path: '/user/refresh_token',
-                domain: '.onrender.com' // Ensure it matches your production domain
+            res.json({
+                msg: "Logged in Successfully",
+                accesstoken,
+                refreshtoken,
+                userId: userExists._id.toString(),
             });
-            
-
-            res.json({accesstoken})
-        }catch(err){
-            return res.status(500).json({msg:err.message})
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
         }
     },
-    logout:async(req,res)=>{
-        try{
-            res.clearCookie('refreshtoken',{path:'/user/refresh_token'})
-            return res.json({msg:"Log Out"})
-        }
-        catch(err){
 
+    logout: async (req, res) => {
+        try {
+            res.json({ msg: "Logged Out" }); // Simply notify the frontend to remove tokens
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
         }
     },
-    getUser:async(req,res)=>{
-        try{
-            const user = await Users.findById(req.user.id).select('-password')
 
-            if(!user) return res.status(400).json({msg:"User Not Found"})
-            res.json(user)
-        }
-        catch(err){
-            return res.status(500).json({msg:err.message})
+    getUser: async (req, res) => {
+        try {
+            const user = await Users.findById(req.user.id).select('-password');
+            if (!user) return res.status(400).json({ msg: "User Not Found" });
+            res.json(user);
+        } catch (err) {
+            return res.status(500).json({ msg: err.message });
         }
     },
     
 }
 
 const createAccessToken = (payload) => {
-    return jwt.sign(payload,process.env.ACCESS_TOKEN_SECRET,{expiresIn:'1d'})
-}
-const createRefreshToken = (payload) => {
-    return jwt.sign(payload,process.env.REFRESH_TOKEN_SECRET,{expiresIn:'7d'})
+    return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' });
 }
 
-module.exports = userCtrl
+const createRefreshToken = (payload) => {
+    return jwt.sign(payload, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' });
+}
+
+module.exports = userCtrl;
