@@ -15,7 +15,7 @@ const Header = () => {
 
 
     const logoutUser = async() => {
-        await axios.get(`/user/logout`)
+        await axios.get(`${process.env.REACT_APP_API_KEY}/user/logout`)
         cart.length=0;
         localStorage.clear()
         setIsAdmin(false)

@@ -20,7 +20,7 @@ const Register = () => {
   const registerSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post(`/user/register`, { ...user });
+      const res = await axios.post(`${process.env.REACT_APP_API_KEY}/user/register`, { ...user });
 
       // Store tokens and login status in localStorage
       localStorage.setItem('firstLogin', true);
