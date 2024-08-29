@@ -9,13 +9,14 @@ header{
     border-bottom: 1px solid #ddd;
 }
 
+header.logo{
+    flex:1;
+
+}
+
 header a{
     text-transform: uppercase;
-}
-header ul{
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    color: black;
 }
 header ul li{
     display: inline-block;
@@ -41,5 +42,3 @@ header ul li:hover{
     padding: 5px 7px;
     font-size: 10px;
 }
-
-

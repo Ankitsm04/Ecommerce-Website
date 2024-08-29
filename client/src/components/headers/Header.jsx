@@ -5,8 +5,6 @@ import { MdOutlineAddShoppingCart } from "react-icons/md";
 import {Link} from 'react-router-dom'
 import { GlobalState } from '../../GlobalState';
 import axios from 'axios';
-import logo from '../../assets/logo/logomed.png'
-import SearchBar from './utils/Searchbar';
 
 const Header = () => {
 
@@ -17,7 +15,7 @@ const Header = () => {
 
 
     const logoutUser = async() => {
-        await axios.get(`/user/logout`)
+        await axios.get(`${process.env.REACT_APP_API_KEY}/user/logout`)
         cart.length=0;
         localStorage.clear()
         setIsAdmin(false)
@@ -27,9 +25,8 @@ const Header = () => {
     const adminRouter = ()=>{
         return(
             <>
-            <li><Link to='/dashboard'>Dashboard</Link></li>
-            {/* <li><Link to='/create-product'>Create Product</Link></li>
-            <li><Link to='/category'>Categories </Link></li> */}
+            <li><Link to='/create_product'>Create Product</Link></li>
+            <li><Link to='/category'>Categories </Link></li>
             </>
         )
     }
@@ -37,10 +34,7 @@ const Header = () => {
     const loggedRouter = ()=>{
         return(
             <>
-            {/* <li><Link to='/history'>History</Link></li> */}
-            <li><Link to='/contact-us'>Contact Us</Link></li>
-            <li><Link to='/about-us'>About</Link></li>
-            <SearchBar />
+            <li><Link to='/history'>History</Link></li>
             <li><Link to='/' onClick={logoutUser}>Logout</Link></li>
             </>
         )
@@ -52,15 +46,14 @@ const Header = () => {
             <MdOutlineMenu size={30}/>
         </div>
 
-            <h1>
-                <Link to="/">{isAdmin?'Admin':''}</Link>
-            </h1>
-
         <div className='logo'>
-            <img src={logo} alt="" height={100} width={220} />
+            <h1>
+                <Link to="/">{isAdmin?'Admin':'A1 Market'}</Link>
+            </h1>
         </div>
+
         <ul>
-            <li><Link to="/">{isAdmin?'Products':'Home'}</Link></li>
+            <li><Link to="/">{isAdmin?'Products':'Shop'}</Link></li>
 
             {isAdmin && adminRouter()}
             {

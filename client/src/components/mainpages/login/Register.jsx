@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify'; // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import styles
-import './Login.css'
+import './Register.css';
 
 const Register = () => {
   const [user, setUser] = useState({
@@ -20,7 +20,7 @@ const Register = () => {
   const registerSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post(`/user/register`, { ...user });
+      const res = await axios.post(`${process.env.REACT_APP_API_KEY}/user/register`, { ...user });
 
       // Store tokens and login status in localStorage
       localStorage.setItem('firstLogin', true);
@@ -28,7 +28,7 @@ const Register = () => {
       localStorage.setItem('refreshtoken', res.data.refreshtoken);
 
       // Show success notification
-      toast.success('Registered successfully!', { autoClose: 5000 });
+      toast.success('Registered successfully! Redirecting...', { autoClose: 5000 });
 
       // Redirect to main page after 5 seconds
       setTimeout(() => {
@@ -41,8 +41,7 @@ const Register = () => {
   };
 
   return (
-    <div className="container">
-    <div className='login-page'>
+    <div className='register-page'>
       <form onSubmit={registerSubmit}>
         <input
           type='text'
@@ -74,7 +73,6 @@ const Register = () => {
         </div>
       </form>
       <ToastContainer />
-    </div>
     </div>
   );
 };

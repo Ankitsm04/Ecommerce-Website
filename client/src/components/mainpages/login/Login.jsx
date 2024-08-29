@@ -19,7 +19,7 @@ const Login = () => {
   const loginSubmit = async e => {
     e.preventDefault();
     try {
-      const res = await axios.post(`/user/login`, { ...user });
+      const res = await axios.post(`${process.env.REACT_APP_API_KEY}/user/login`, { ...user });
 
       localStorage.setItem('firstLogin', true);
       localStorage.setItem('accesstoken', res.data.accesstoken);

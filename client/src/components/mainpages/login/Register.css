@@ -1,9 +1,12 @@
 /* Register.css */
+
+/* Container for the registration page */
 .register-page {
     display: flex;
     justify-content: center;
     align-items: center;
-    box-sizing: border-box;
+    height: 100vh;
+    background-color: #f4f4f9;
   }
   
   /* Style for the form */
