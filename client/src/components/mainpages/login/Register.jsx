@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link,useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast, ToastContainer } from 'react-toastify'; // Import react-toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import styles
@@ -11,7 +11,7 @@ const Register = () => {
     email: '',
     password: ''
   });
-
+  const navigate=useNavigate();
   const onChangeInput = e => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
@@ -32,7 +32,7 @@ const Register = () => {
 
       // Redirect to main page after 5 seconds
       setTimeout(() => {
-        window.location.href = "/";
+        navigate('/');
       }, 2000);
 
     } catch (err) {
